@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "extends": [
+    "plugin:jsx-a11y/recommended",
+    "plugin:react/recommended",
+    "airbnb-base",
+    "prettier"
+  ],
+  "rules": {
+    "no-undef": "off",
+    "no-unused-vars": "warn",
+    "import/extensions": "off",
+    "react/react-in-jsx-scope": "off"
+  }
+}
