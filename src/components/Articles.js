@@ -31,7 +31,7 @@ export default function Articles() {
               key={article.article_id}
               className="border-t-2 border-sky-600 bg-neutral-100 p-6 hover:bg-neutral-200"
             >
-              <Link to={`api/articles/${article.article_id}`}>
+              <Link to={`/articles/${article.article_id}`}>
                 <article>
                   <div className="mb-1 text-lg font-semibold italic text-orange-600">
                     {article.author}
