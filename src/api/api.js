@@ -18,3 +18,8 @@ export async function getArticles() {
   const { data } = await newsApi.get('/articles');
   return data;
 }
+
+export async function getArticleById(id) {
+  const { data } = await newsApi.get(`/articles/${id}`);
+  return data;
+}
