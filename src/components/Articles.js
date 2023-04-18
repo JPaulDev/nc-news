@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getArticles } from '../api/api';
 import LoadingSpinner from './LoadingSpinner';
-import Heart from './icons/Heart';
+import { Comment, Heart } from './icons';
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
@@ -52,9 +52,15 @@ export default function Articles() {
                     <div className="rounded-md bg-orange-300 px-3 py-1">
                       {article.topic}
                     </div>
-                    <div className="flex gap-2">
-                      <Heart className="h-7 w-7 fill-pink-600" />
-                      <div>{article.votes}</div>
+                    <div className="flex gap-3">
+                      <div className="flex gap-1">
+                        <Heart className="h-7 w-7 fill-pink-600" />
+                        <div>{article.votes}</div>
+                      </div>
+                      <div className="flex gap-1">
+                        <Comment className="h-7 w-7 fill-sky-700" />
+                        <div>{article.comment_count}</div>
+                      </div>
                     </div>
                   </div>
                 </article>
