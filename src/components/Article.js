@@ -43,7 +43,7 @@ export default function Article() {
         {time}
       </aside>
       <div className="hidden bg-stone-300 sm:block" />
-      <div>
+      <div className="w-[min(700px,100%)]">
         <h2 className="mb-6 text-2xl font-medium text-sky-700 sm:text-3xl">
           {article.title}
         </h2>
@@ -53,7 +53,7 @@ export default function Article() {
           {time}
           <Divider className="mt-2" />
         </div>
-        <p className="mt-4 max-w-3xl text-stone-700">{article.body}</p>
+        <p className="mt-4 text-stone-700">{article.body}</p>
       </div>
     </article>
   );
