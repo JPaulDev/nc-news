@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 #root {
-  @apply min-h-screen;
+  @apply flex min-h-screen flex-col;
 }
