@@ -109,7 +109,11 @@ export default function Article() {
           </div>
           <p className="my-4 text-stone-700">{article.body}</p>
           <div className="flex items-center gap-3 text-left">
-            <button onClick={handleLikeArticle} disabled={isLiked}>
+            <button
+              onClick={handleLikeArticle}
+              disabled={isLiked}
+              aria-label="Like article."
+            >
               <Heart
                 className={clsx(
                   'h-8 w-8 stroke-pink-600 stroke-[1rem] sm:h-10 sm:w-10',
