@@ -38,7 +38,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-[#052962] pt-6 font-bold text-white sm:px-6 md:px-12">
+    <header className="bg-[#052962] pt-6 font-bold text-white sm:px-6 xl:px-12">
       <div className="mx-auto max-w-7xl">
         <SignIn />
         <nav className="relative min-h-[3rem] border border-slate-500">
