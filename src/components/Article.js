@@ -27,7 +27,6 @@ export default function Article() {
     if (!user) return toast.error('You must be signed in to like articles.');
 
     try {
-      // Optimistically add a like to the article.
       setArticle((previousArticle) => {
         const newVotes = previousArticle.votes + 1;
         return { ...previousArticle, votes: newVotes };
@@ -37,8 +36,6 @@ export default function Article() {
 
       await updateArticleLikes(id, { inc_votes: 1 });
     } catch (err) {
-      // If liking the article fails due to the API being down then undo the
-      // the previous update and display an error message.
       setArticle((previousArticle) => {
         const newVotes = previousArticle.votes - 1;
         return { ...previousArticle, votes: newVotes };
