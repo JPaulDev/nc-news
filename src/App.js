@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { Flip, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Article from './components/Article';
 import Articles from './components/Articles';
 import Header from './components/Header';
