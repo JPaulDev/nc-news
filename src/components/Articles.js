@@ -29,9 +29,12 @@ export default function Articles() {
           {articles.map((article) => (
             <li
               key={article.article_id}
-              className="border-t-2 border-sky-600 bg-neutral-100 p-6 hover:bg-neutral-200"
+              className="border-t-2 border-sky-600 bg-neutral-100 hover:bg-neutral-200"
             >
-              <Link to={`/articles/${article.article_id}`}>
+              <Link
+                className="block p-6"
+                to={`/articles/${article.article_id}`}
+              >
                 <article>
                   <div className="mb-1 text-lg font-semibold italic text-orange-600">
                     {article.author}
