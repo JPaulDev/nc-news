@@ -1,18 +1,54 @@
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getArticleById, getArticleComments } from '../api/api';
+import { toast } from 'react-toastify';
+import {
+  getArticleById,
+  getArticleComments,
+  updateArticleLikes,
+} from '../api/api';
+import { useAuth } from '../contexts/AuthContext';
 import capitaliseString from '../utils/capitaliseString';
 import CommentCard from './CommentCard';
 import Divider from './Divider';
 import LoadingSpinner from './LoadingSpinner';
-import Comment from './icons/Comment';
+import { Comment, Heart } from './icons';
 
 export default function Article() {
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLiked, setIsLiked] = useState(false);
   const { id } = useParams();
+  const { user } = useAuth();
+
+  const handleLikeArticle = async () => {
+    if (!user) return toast.error('You must be signed in to like articles.');
+
+    try {
+      setArticle((previousArticle) => {
+        const newVotes = previousArticle.votes + 1;
+        return { ...previousArticle, votes: newVotes };
+      });
+      setIsLiked(true);
+      toast.success('Success, you liked this article.');
+
+      await updateArticleLikes(id, { inc_votes: 1 });
+    } catch (err) {
+      setArticle((previousArticle) => {
+        const newVotes = previousArticle.votes - 1;
+        return { ...previousArticle, votes: newVotes };
+      });
+      setIsLiked(false);
+
+      toast.error(
+        "Oops, we couldn't reach our servers. Please try again later."
+      );
+    }
+
+    return undefined;
+  };
 
   useEffect(() => {
     const fetchArticleData = async () => {
@@ -59,6 +95,26 @@ export default function Article() {
           <Divider className="mt-2" />
         </div>
         <p className="my-4 text-stone-700">{article.body}</p>
+        <div className="flex items-center gap-3 text-left">
+          <button
+            onClick={handleLikeArticle}
+            disabled={isLiked}
+            aria-label="Like article."
+          >
+            <Heart
+              className={clsx(
+                'h-8 w-8 stroke-pink-600 stroke-[1rem] sm:h-10 sm:w-10',
+                isLiked ? 'fill-pink-600' : 'fill-transparent'
+              )}
+            />
+          </button>
+          <div>
+            <h3 className="text-lg font-semibold">Likes: {article.votes}</h3>
+            <div className="text-sm text-stone-600 sm:text-base">
+              Like this article
+            </div>
+          </div>
+        </div>
       </div>
       <section className="flex flex-col gap-3 sm:col-start-3 sm:col-end-4">
         <Divider />
@@ -68,13 +124,14 @@ export default function Article() {
             <h3 className="text-lg font-semibold sm:text-xl">
               Comments: {article.comment_count}
             </h3>
-            <div className="text-stone-600">Share what you think</div>
+            <div className="text-sm text-stone-600 sm:text-base">
+              Share what you think
+            </div>
           </div>
         </div>
         {comments.map((comment) => (
           <CommentCard key={comment.comment_id} comment={comment} />
         ))}
-
         {!comments.length && (
           <div className="text-stone-600">
             There is nothing here, be the first to comment.

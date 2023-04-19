@@ -24,6 +24,11 @@ export async function getArticleById(id) {
   return data;
 }
 
+export async function updateArticleLikes(id, likes) {
+  const { data } = await newsApi.patch(`/articles/${id}`, likes);
+  return data;
+}
+
 export async function getArticleComments(id) {
   const { data } = await newsApi.get(`/articles/${id}/comments`);
   return data;

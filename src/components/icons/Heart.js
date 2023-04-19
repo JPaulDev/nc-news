@@ -2,7 +2,7 @@ export default function Heart(props) {
   return (
     <svg
       fill="currentColor"
-      viewBox="0 0 512 512"
+      viewBox="-6 0 530 512"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
