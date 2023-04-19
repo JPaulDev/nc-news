@@ -63,9 +63,9 @@ export default function Article() {
       <section className="flex flex-col gap-3 sm:col-start-3 sm:col-end-4">
         <Divider />
         <div className="flex gap-4">
-          <Comment className="h-14 w-14 fill-sky-700" />
+          <Comment className="h-12 w-12 fill-sky-700 sm:h-14 sm:w-14" />
           <div>
-            <h3 className="text-xl font-semibold">
+            <h3 className="text-lg font-semibold sm:text-xl">
               Comments: {article.comment_count}
             </h3>
             <div className="text-stone-600">Share what you think</div>

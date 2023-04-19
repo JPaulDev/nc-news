@@ -53,11 +53,11 @@ export default function Articles() {
                       {article.topic}
                     </div>
                     <div className="flex gap-3">
-                      <div className="flex gap-1">
+                      <div className="flex items-center gap-1">
                         <Heart className="h-7 w-7 fill-pink-600" />
                         <div>{article.votes}</div>
                       </div>
-                      <div className="flex gap-1">
+                      <div className="flex items-center gap-1">
                         <Comment className="h-7 w-7 fill-sky-700" />
                         <div>{article.comment_count}</div>
                       </div>
