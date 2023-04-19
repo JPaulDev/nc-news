@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Flip, ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   getArticleById,
@@ -76,82 +76,72 @@ export default function Article() {
   return isLoading ? (
     <LoadingSpinner size={35} />
   ) : (
-    <>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2500}
-        transition={Flip}
-        hideProgressBar={true}
-      />
-      <article className="grid h-full gap-4 sm:grid-cols-[8rem_0.063rem_1fr] lg:grid-cols-[14rem_0.063rem_1fr]">
-        <aside className="row-start-1 row-end-3 hidden sm:block">
-          <div className="mb-20 text-2xl font-bold text-red-600">
-            {capitaliseString(article.topic)}
-          </div>
-          <Divider />
-          <div className="mt-3 flex flex-col gap-3 text-lg font-bold text-red-600 after:mb-2 after:h-px after:bg-stone-300">
-            {article.author}
-          </div>
+    <article className="grid h-full gap-4 sm:grid-cols-[8rem_0.063rem_1fr] lg:grid-cols-[14rem_0.063rem_1fr]">
+      <aside className="row-start-1 row-end-3 hidden sm:block">
+        <div className="mb-20 text-2xl font-bold text-red-600">
+          {capitaliseString(article.topic)}
+        </div>
+        <Divider />
+        <div className="mt-3 flex flex-col gap-3 text-lg font-bold text-red-600 after:mb-2 after:h-px after:bg-stone-300">
+          {article.author}
+        </div>
+        {time}
+      </aside>
+      <div className="row-start-1 row-end-3 hidden bg-stone-300 sm:block" />
+      <div className="w-[min(700px,100%)]">
+        <h2 className="mb-6 text-2xl font-medium text-sky-700 sm:text-3xl">
+          {article.title}
+        </h2>
+        <img src={article.article_img_url} alt="" width="700" height="700" />
+        <div className="mt-2 sm:hidden">
+          <div className="text-lg font-bold text-red-600">{article.author}</div>
           {time}
-        </aside>
-        <div className="row-start-1 row-end-3 hidden bg-stone-300 sm:block" />
-        <div className="w-[min(700px,100%)]">
-          <h2 className="mb-6 text-2xl font-medium text-sky-700 sm:text-3xl">
-            {article.title}
-          </h2>
-          <img src={article.article_img_url} alt="" width="700" height="700" />
-          <div className="mt-2 sm:hidden">
-            <div className="text-lg font-bold text-red-600">
-              {article.author}
-            </div>
-            {time}
-            <Divider className="mt-2" />
-          </div>
-          <p className="my-4 text-stone-700">{article.body}</p>
-          <div className="flex items-center gap-3 text-left">
-            <button
-              onClick={handleLikeArticle}
-              disabled={isLiked}
-              aria-label="Like article."
-            >
-              <Heart
-                className={clsx(
-                  'h-8 w-8 stroke-pink-600 stroke-[1rem] sm:h-10 sm:w-10',
-                  isLiked ? 'fill-pink-600' : 'fill-transparent'
-                )}
-              />
-            </button>
-            <div>
-              <h3 className="text-lg font-semibold">Likes: {article.votes}</h3>
-              <div className="text-sm text-stone-600 sm:text-base">
-                Like this article
-              </div>
+          <Divider className="mt-2" />
+        </div>
+        <p className="my-4 text-stone-700">{article.body}</p>
+        <div className="flex items-center gap-3 text-left">
+          <button
+            onClick={handleLikeArticle}
+            disabled={isLiked}
+            aria-label="Like article."
+          >
+            <Heart
+              className={clsx(
+                'h-8 w-8 stroke-pink-600 stroke-[1rem] sm:h-10 sm:w-10',
+                isLiked ? 'fill-pink-600' : 'fill-transparent'
+              )}
+            />
+          </button>
+          <div>
+            <h3 className="text-lg font-semibold">Likes: {article.votes}</h3>
+            <div className="text-sm text-stone-600 sm:text-base">
+              Like this article
             </div>
           </div>
         </div>
-        <section className="flex flex-col gap-3 sm:col-start-3 sm:col-end-4">
-          <Divider />
-          <div className="flex gap-4">
-            <Comment className="h-12 w-12 fill-sky-700 sm:h-14 sm:w-14" />
-            <div>
-              <h3 className="text-lg font-semibold sm:text-xl">
-                Comments: {article.comment_count}
-              </h3>
-              <div className="text-sm text-stone-600 sm:text-base">
-                Share what you think
-              </div>
+      </div>
+      <section className="flex flex-col gap-3 sm:col-start-3 sm:col-end-4">
+        <Divider />
+        <div className="flex gap-4">
+          <Comment className="h-12 w-12 fill-sky-700 sm:h-14 sm:w-14" />
+          <div>
+            <h3 className="text-lg font-semibold sm:text-xl">
+              Comments: {article.comment_count}
+            </h3>
+            <div className="text-sm text-stone-600 sm:text-base">
+              Share what you think
             </div>
           </div>
-          {comments.map((comment) => (
-            <CommentCard key={comment.comment_id} comment={comment} />
-          ))}
-          {!comments.length && (
-            <div className="text-stone-600">
-              There is nothing here, be the first to comment.
-            </div>
-          )}
-        </section>
-      </article>
-    </>
+        </div>
+        {comments.map((comment) => (
+          <CommentCard key={comment.comment_id} comment={comment} />
+        ))}
+        {!comments.length && (
+          <div className="text-stone-600">
+            There is nothing here, be the first to comment.
+          </div>
+        )}
+      </section>
+    </article>
   );
 }
