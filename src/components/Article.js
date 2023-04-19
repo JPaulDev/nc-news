@@ -74,6 +74,12 @@ export default function Article() {
         {comments.map((comment) => (
           <CommentCard key={comment.comment_id} comment={comment} />
         ))}
+
+        {!comments.length && (
+          <div className="text-stone-600">
+            There is nothing here, be the first to comment.
+          </div>
+        )}
       </section>
     </article>
   );
