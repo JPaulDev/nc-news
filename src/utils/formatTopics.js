@@ -7,7 +7,7 @@ export default function formatTopics(topics) {
 
     return {
       topic: capitalisedTopic,
-      slug: `topic/${slug}`,
+      slug: `/articles/${slug}`,
       description,
     };
   });

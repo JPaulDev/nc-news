@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTopics } from '../api/api';
+import { useTopic } from '../contexts/TopicContext';
 import formatTopics from '../utils/formatTopics';
 import LoadingSpinner from './LoadingSpinner';
 import SignIn from './SignIn';
@@ -13,14 +14,10 @@ const TOPIC_COLORS = [
   'after:bg-[#ffacda]',
 ];
 
-const INITIAL_TOPIC = 'All';
-
 export default function Header() {
-  const [activeTopic, setActiveTopic] = useState(INITIAL_TOPIC);
   const [isLoading, setIsLoading] = useState(true);
   const [topics, setTopics] = useState([]);
-
-  const handleChangeTopic = (topic) => setActiveTopic(topic);
+  const { activeTopic, handleChangeTopic } = useTopic();
 
   useEffect(() => {
     const fetchTopics = async () => {
