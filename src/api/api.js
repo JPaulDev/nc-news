@@ -14,10 +14,12 @@ export async function getTopics() {
   return data;
 }
 
-export async function getArticles({ topic }) {
+export async function getArticles({ topic, sort_by, order }) {
   const { data } = await newsApi.get('/articles', {
     params: {
       topic,
+      sort_by,
+      order,
     },
   });
 
