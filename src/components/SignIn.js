@@ -24,28 +24,24 @@ export default function SignIn() {
   }, []);
 
   return (
-    <div className="mb-6 flex items-center justify-between px-4 sm:px-0">
-      <h1>
-        <div className="text-4xl sm:text-5xl">Northcoders</div>
-        <div className="ml-8 text-2xl sm:text-3xl">News</div>
-      </h1>
-      <button className="hover:underline sm:text-xl" onClick={handleChangeUser}>
-        {!user ? (
-          <>
-            <User className="mb-1 ml-auto h-7 w-7 rounded-full sm:h-10 sm:w-10" />
-            <span>Sign in</span>
-          </>
-        ) : (
-          <>
-            <img
-              src={user.avatar_url}
-              alt=""
-              className="mb-1 ml-auto h-8 w-8 rounded-full sm:h-10 sm:w-10"
-            />
-            <span>{user.username}</span>
-          </>
-        )}
-      </button>
-    </div>
+    <button className="hover:underline sm:text-xl" onClick={handleChangeUser}>
+      {!user ? (
+        <>
+          <User className="mb-1 ml-auto h-7 w-7 rounded-full sm:h-10 sm:w-10" />
+          <span>Sign in</span>
+        </>
+      ) : (
+        <>
+          <img
+            src={user.avatar_url}
+            alt=""
+            className="mb-1 ml-auto h-8 w-8 rounded-full sm:h-10 sm:w-10"
+          />
+          <div className="xs:w-auto w-[5rem] overflow-hidden text-ellipsis">
+            {user.username}
+          </div>
+        </>
+      )}
+    </button>
   );
 }

@@ -11,6 +11,7 @@ import {
 import { useAuth } from '../contexts/AuthContext';
 import capitaliseString from '../utils/capitaliseString';
 import CommentCard from './CommentCard';
+import CommentForm from './CommentForm';
 import Divider from './Divider';
 import LoadingSpinner from './LoadingSpinner';
 import { Comment, Heart } from './icons';
@@ -129,6 +130,12 @@ export default function Article() {
             </div>
           </div>
         </div>
+        <CommentForm
+          setComments={setComments}
+          setArticle={setArticle}
+          articleId={id}
+          user={user}
+        />
         {comments.map((comment) => (
           <CommentCard key={comment.comment_id} comment={comment} />
         ))}
