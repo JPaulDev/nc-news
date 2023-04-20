@@ -137,7 +137,12 @@ export default function Article() {
           user={user}
         />
         {comments.map((comment) => (
-          <CommentCard key={comment.comment_id} comment={comment} />
+          <CommentCard
+            key={comment.comment_id}
+            comment={comment}
+            setComments={setComments}
+            setArticle={setArticle}
+          />
         ))}
         {!comments.length && (
           <div className="text-stone-600">

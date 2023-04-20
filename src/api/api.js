@@ -45,3 +45,7 @@ export async function postArticleComment(id, comment) {
   const { data } = await newsApi.post(`/articles/${id}/comments`, comment);
   return data;
 }
+
+export async function deleteArticleComment(id) {
+  await newsApi.delete(`/comments/${id}`);
+}
