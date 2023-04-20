@@ -19,7 +19,8 @@ export default function App() {
         <div className="relative max-w-7xl flex-1 border border-stone-400 p-4">
           <Routes>
             <Route path="/" element={<Articles />} />
-            <Route path="/articles/:id" element={<Article />} />
+            <Route path="/articles/:topic" element={<Articles />} />
+            <Route path="/article/:id" element={<Article />} />
           </Routes>
         </div>
       </main>

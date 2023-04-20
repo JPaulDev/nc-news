@@ -1,24 +1,38 @@
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getArticles } from '../api/api';
+import { useTopic } from '../contexts/TopicContext';
+import capitaliseString from '../utils/capitaliseString';
 import LoadingSpinner from './LoadingSpinner';
 import { Comment, Heart } from './icons';
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { handleChangeTopic } = useTopic();
+  const { topic } = useParams();
+
+  // If the user loads a topic page directly or refreshes the page, sets the
+  // navbars active topic to the correct topic.
+  useEffect(() => {
+    if (topic) {
+      const capitalisedTopic = capitaliseString(topic);
+      handleChangeTopic(capitalisedTopic);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchArticles = async () => {
-      const { articles: fetchedArticles } = await getArticles();
+      setIsLoading(true);
+      const { articles: fetchedArticles } = await getArticles({ topic });
 
       setArticles(fetchedArticles);
       setIsLoading(false);
     };
 
     fetchArticles();
-  }, []);
+  }, [topic]);
 
   return (
     <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -31,10 +45,7 @@ export default function Articles() {
               key={article.article_id}
               className="border-t-2 border-sky-600 bg-neutral-100 hover:bg-neutral-200"
             >
-              <Link
-                className="block p-6"
-                to={`/articles/${article.article_id}`}
-              >
+              <Link className="block p-6" to={`/article/${article.article_id}`}>
                 <article>
                   <div className="mb-1 text-lg font-semibold italic text-orange-600">
                     {article.author}

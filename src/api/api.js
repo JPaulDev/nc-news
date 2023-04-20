@@ -14,8 +14,13 @@ export async function getTopics() {
   return data;
 }
 
-export async function getArticles() {
-  const { data } = await newsApi.get('/articles');
+export async function getArticles({ topic }) {
+  const { data } = await newsApi.get('/articles', {
+    params: {
+      topic,
+    },
+  });
+
   return data;
 }
 

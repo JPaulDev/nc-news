@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
+import { TopicProvider } from './contexts/TopicContext';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -11,7 +12,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <TopicProvider>
+          <App />
+        </TopicProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
