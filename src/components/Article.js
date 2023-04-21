@@ -9,10 +9,12 @@ import {
   updateArticleLikes,
 } from '../api/api';
 import { useAuth } from '../contexts/AuthContext';
+import useError from '../hooks/useError';
 import capitaliseString from '../utils/capitaliseString';
 import CommentCard from './CommentCard';
 import CommentForm from './CommentForm';
 import Divider from './Divider';
+import Error from './Error';
 import LoadingSpinner from './LoadingSpinner';
 import { Comment, Heart } from './icons';
 
@@ -23,6 +25,7 @@ export default function Article() {
   const [isLiked, setIsLiked] = useState(false);
   const { id } = useParams();
   const { user } = useAuth();
+  const { handleError, error } = useError();
 
   const handleLikeArticle = async () => {
     if (!user) return toast.error('You must be signed in to like articles.');
@@ -53,11 +56,15 @@ export default function Article() {
 
   useEffect(() => {
     const fetchArticleData = async () => {
-      const { article: fetchedArticle } = await getArticleById(id);
-      const { comments: fetchedComments } = await getArticleComments(id);
+      try {
+        const { article: fetchedArticle } = await getArticleById(id);
+        const { comments: fetchedComments } = await getArticleComments(id);
+        setArticle(fetchedArticle);
+        setComments(fetchedComments);
+      } catch (err) {
+        handleError(err);
+      }
 
-      setArticle(fetchedArticle);
-      setComments(fetchedComments);
       setIsLoading(false);
     };
 
@@ -69,6 +76,10 @@ export default function Article() {
       {format(new Date(article.created_at), 'E MMM do yyyy h:mmbbb')}
     </time>
   ) : null;
+
+  if (error) {
+    return <Error error={error} />;
+  }
 
   return isLoading ? (
     <LoadingSpinner size={35} />

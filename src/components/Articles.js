@@ -3,12 +3,16 @@ import { useEffect, useId, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { getArticles } from '../api/api';
 import { useTopic } from '../contexts/TopicContext';
+import useError from '../hooks/useError';
 import capitaliseString from '../utils/capitaliseString';
 import Divider from './Divider';
+import Error from './Error';
 import LoadingSpinner from './LoadingSpinner';
 import { Comment, Heart } from './icons';
 
 const DEFAULT_SORT = 'created_at desc';
+const VALID_SORTS = ['created_at', 'votes', 'comment_count'];
+const VALID_ORDERS = ['desc', 'asc'];
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
@@ -18,9 +22,12 @@ export default function Articles() {
   const { handleChangeTopic } = useTopic();
   const { topic } = useParams();
   const id = useId();
+  const { handleError, setError, error } = useError();
 
   const sortByQuery = searchParams.get('sort_by');
   const orderQuery = searchParams.get('order');
+  const isValidSort = VALID_SORTS.includes(sortByQuery);
+  const isValidOrder = VALID_ORDERS.includes(orderQuery);
 
   const handleChangeSortBy = (e) => {
     const { value } = e.target;
@@ -47,6 +54,8 @@ export default function Articles() {
   // parameters are already set e.g, if a user refreshes the page and when changing
   // topic reset sort by to the default value.
   useEffect(() => {
+    if ((sortByQuery && !isValidSort) || (orderQuery && !isValidOrder)) return;
+
     if (sortByQuery && orderQuery) {
       setDropdown(`${sortByQuery} ${orderQuery}`);
     } else if (sortByQuery) {
@@ -60,19 +69,30 @@ export default function Articles() {
 
   useEffect(() => {
     const fetchArticles = async () => {
+      setError(null);
       setIsLoading(true);
-      const { articles: fetchedArticles } = await getArticles({
-        topic,
-        sort_by: sortByQuery,
-        order: orderQuery,
-      });
 
-      setArticles(fetchedArticles);
+      try {
+        const { articles: fetchedArticles } = await getArticles({
+          topic,
+          sort_by: isValidSort ? sortByQuery : null,
+          order: isValidOrder ? orderQuery : null,
+        });
+
+        setArticles(fetchedArticles);
+      } catch (err) {
+        handleError(err);
+      }
+
       setIsLoading(false);
     };
 
     fetchArticles();
   }, [topic, sortByQuery, orderQuery]);
+
+  if (error) {
+    return <Error error={error} />;
+  }
 
   return (
     <section>

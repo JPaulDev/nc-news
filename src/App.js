@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Article from './components/Article';
 import Articles from './components/Articles';
 import Header from './components/Header';
+import Page404 from './components/Page404';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/" element={<Articles />} />
             <Route path="/articles/:topic" element={<Articles />} />
             <Route path="/article/:id" element={<Article />} />
+            <Route path="/*" element={<Page404 />} />
           </Routes>
         </div>
       </main>
