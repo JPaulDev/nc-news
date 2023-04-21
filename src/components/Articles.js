@@ -3,8 +3,10 @@ import { useEffect, useId, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { getArticles } from '../api/api';
 import { useTopic } from '../contexts/TopicContext';
+import useError from '../hooks/useError';
 import capitaliseString from '../utils/capitaliseString';
 import Divider from './Divider';
+import Error from './Error';
 import LoadingSpinner from './LoadingSpinner';
 import { Comment, Heart } from './icons';
 
@@ -20,6 +22,7 @@ export default function Articles() {
   const { handleChangeTopic } = useTopic();
   const { topic } = useParams();
   const id = useId();
+  const { handleError, setError, error } = useError();
 
   const sortByQuery = searchParams.get('sort_by');
   const orderQuery = searchParams.get('order');
@@ -66,19 +69,30 @@ export default function Articles() {
 
   useEffect(() => {
     const fetchArticles = async () => {
+      setError(null);
       setIsLoading(true);
-      const { articles: fetchedArticles } = await getArticles({
-        topic,
-        sort_by: isValidSort ? sortByQuery : null,
-        order: isValidOrder ? orderQuery : null,
-      });
 
-      setArticles(fetchedArticles);
+      try {
+        const { articles: fetchedArticles } = await getArticles({
+          topic,
+          sort_by: isValidSort ? sortByQuery : null,
+          order: isValidOrder ? orderQuery : null,
+        });
+
+        setArticles(fetchedArticles);
+      } catch (err) {
+        handleError(err);
+      }
+
       setIsLoading(false);
     };
 
     fetchArticles();
   }, [topic, sortByQuery, orderQuery]);
+
+  if (error) {
+    return <Error error={error} />;
+  }
 
   return (
     <section>
