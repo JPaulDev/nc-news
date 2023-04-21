@@ -9,6 +9,8 @@ import LoadingSpinner from './LoadingSpinner';
 import { Comment, Heart } from './icons';
 
 const DEFAULT_SORT = 'created_at desc';
+const VALID_SORTS = ['created_at', 'votes', 'comment_count'];
+const VALID_ORDERS = ['desc', 'asc'];
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
@@ -21,6 +23,8 @@ export default function Articles() {
 
   const sortByQuery = searchParams.get('sort_by');
   const orderQuery = searchParams.get('order');
+  const isValidSort = VALID_SORTS.includes(sortByQuery);
+  const isValidOrder = VALID_ORDERS.includes(orderQuery);
 
   const handleChangeSortBy = (e) => {
     const { value } = e.target;
@@ -47,6 +51,8 @@ export default function Articles() {
   // parameters are already set e.g, if a user refreshes the page and when changing
   // topic reset sort by to the default value.
   useEffect(() => {
+    if ((sortByQuery && !isValidSort) || (orderQuery && !isValidOrder)) return;
+
     if (sortByQuery && orderQuery) {
       setDropdown(`${sortByQuery} ${orderQuery}`);
     } else if (sortByQuery) {
@@ -63,8 +69,8 @@ export default function Articles() {
       setIsLoading(true);
       const { articles: fetchedArticles } = await getArticles({
         topic,
-        sort_by: sortByQuery,
-        order: orderQuery,
+        sort_by: isValidSort ? sortByQuery : null,
+        order: isValidOrder ? orderQuery : null,
       });
 
       setArticles(fetchedArticles);
